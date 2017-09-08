@@ -1,1 +1,3 @@
-console.log([1,2,3].map((n) => n-1));
+import * as fun from './functional';
+
+console.log(fun.map(n=>n+1)([1,2,3]));
