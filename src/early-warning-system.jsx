@@ -1,6 +1,8 @@
 import * as React from 'react';
 import smoothie from 'smoothie';
 
+import './early-warning-system.css';
+
 class EarlyWarningSystem extends React.Component {
   constructor(props) {
     super(props);

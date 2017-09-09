@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import './countdown.css';
+
 class Countdown extends React.Component {
   get formattedTime() {
     var t = Math.abs(this.props.time);
