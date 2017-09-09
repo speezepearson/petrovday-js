@@ -8,9 +8,9 @@ import './launch-button.css';
 
 
 class LaunchButton extends React.Component {
-  constructor(props, state) {
+  constructor(props) {
     super(props);
-    this.state = {'state': state};
+    this.state = {'state': 'ready'};
   }
 
   render() {
