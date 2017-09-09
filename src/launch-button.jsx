@@ -1,4 +1,6 @@
 import * as React from 'react';
+import $ from 'jquery';
+
 import Countdown from './countdown.jsx';
 import { missileFlightTime } from './globals.jsx';
 
