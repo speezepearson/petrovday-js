@@ -2,6 +2,8 @@ import * as React from 'react';
 import Countdown from './countdown.jsx';
 import { missileFlightTime } from './globals.jsx';
 
+import './launch-button.css';
+
 
 class LaunchButton extends React.Component {
   constructor(props, state) {
