@@ -28,6 +28,7 @@ class Game extends React.Component {
   }
 
   onSuccessfulAuthentication(enemies) {
+    console.log('hi');
     this.setState({phase: 'monitoring', enemies: enemies});
   }
 }

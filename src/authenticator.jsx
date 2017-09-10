@@ -17,13 +17,15 @@ class Authenticator extends React.Component {
   render() {
     return <div className="authenticator">
       <input type="password" placeholder="Password" onChange={(e) => this.handleChange(e)} />
-      &nbsp; <button id="submit_password" onClick={() => this.authenticate()}>Log In</button>
+      &nbsp; <button onClick={() => this.authenticate()}>Log In</button>
     </div>;
   }
 
   authenticate(password) {
-    this.props.onSuccessfulAuthentication(['Alice', 'Bob', 'Charlie']);
-    // $.get('authenticate', {'password': this.state.password}, (data) => this.onSuccessfulAuthentication(JSON.parse(data)));
+    $.get('authenticate', {'password': this.state.password}, (data) => {
+      console.log(data);
+      this.props.onSuccessfulAuthentication(JSON.parse(data));
+    });
   }
 }
 
