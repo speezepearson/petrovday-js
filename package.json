@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "node lib/index.js"
+    "start": "node index.js"
   },
   "babel": {
     "presets": [

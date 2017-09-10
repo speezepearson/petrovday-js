@@ -1,9 +1,6 @@
-module.exports = {
-  "entry": "./src/index.jsx",
-  "output": {
-    "path": __dirname,
-    "filename": "dist/bundle.js"
-  },
+var path = require('path');
+
+var basicConfig = {
   "module": {
     "rules": [
       {
@@ -23,3 +20,23 @@ module.exports = {
     ]
   }
 }
+
+var serverConfig = Object.assign({}, basicConfig, {
+  target: 'node',
+  entry: './src/server.js',
+  output: {
+    path: path.resolve(__dirname),
+    filename: 'index.js'
+  }
+});
+
+var clientConfig = Object.assign({}, basicConfig, {
+  target: 'web',
+  entry: './src/index.jsx',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'app.js'
+  }
+});
+
+module.exports = [ serverConfig, clientConfig ];
