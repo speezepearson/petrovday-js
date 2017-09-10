@@ -9,3 +9,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.authenticator__password-field.failed {
+  outline: 2px solid red;
+}
+
+.authenticator__button-holder {
+  display: flex;
+  width: 3em;
+}
+
+.authenticator__spinner {
+  margin-left: 0.5em;
+}
