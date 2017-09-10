@@ -10,19 +10,19 @@ import './launch-button.css';
 class LaunchButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {'state': 'ready'};
+    this.state = {'phase': 'ready'};
   }
 
   render() {
-    if (typeof this.state.state === 'number') {
-      return <button className="launch-button launch-button--ticking"><Countdown time={this.state.state}/></button>;
+    if (typeof this.state.phase === 'number') {
+      return <button className="launch-button launch-button--ticking"><Countdown time={this.state.phase}/></button>;
     }
-    return <button className={`launch-button launch-button--${this.state.state}`} onClick={(e) => this.launch()} disabled={this.state.state==='obsolete'}> &#9762; </button>
+    return <button className={`launch-button launch-button--${this.state.phase}`} onClick={(e) => this.launch()} disabled={this.state.phase==='obsolete'}> &#9762; </button>
   }
 
   launch() {
     $.get('launch/'+this.props.enemy);
-    this.setState({'state': missileFlightTime});
+    this.setState({'phase': missileFlightTime});
   }
 
 }
