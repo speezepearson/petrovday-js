@@ -8,6 +8,6 @@ import './index.css';
 
 $(() =>
 ReactDOM.render(
-  <Game />,
+  <Game ref={(g) => {window.game = g}} />,
   document.getElementById('foo')
 ));
