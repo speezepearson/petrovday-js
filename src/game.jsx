@@ -25,7 +25,7 @@ class Game extends React.Component {
                           alive={info.alive}
                           timeToImpact={info.timeToImpact}
                           timeSinceDeath={info.timeOfDeath===null ? null : (this.state.discreteTime - info.timeOfDeath)}
-                          ref={(ec) => {console.log('setting', e); this.enemyContainers[e] = ec}} />);
+                          ref={(ec) => {this.enemyContainers[e] = ec}} />);
         break;
       case 'dead':
         contents = '';

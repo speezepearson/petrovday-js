@@ -13,7 +13,6 @@ class EnemyContainer extends React.Component {
       (this.props.timeToImpact === null) ? 'ready' :
       this.props.timeToImpact
     );
-    console.log(this.props)
     return <div className="enemy-container">
       <h2 className="enemy-name">{this.props.enemy}</h2>
       <LaunchButton phase={buttonPhase} enemy={this.props.enemy} />
@@ -23,7 +22,6 @@ class EnemyContainer extends React.Component {
   }
 
   noteUpdate(now, info) {
-    console.log('updating', this.props.enemy, 'at', now, 'with', info);
     Object.entries(info.readings).map(([t,x]) => this.ews.addReading(now-t, x));
   }
 
