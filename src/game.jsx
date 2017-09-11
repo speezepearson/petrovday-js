@@ -1,4 +1,5 @@
 import * as React from 'react';
+import $ from 'jquery';
 
 import Authenticator from './authenticator.jsx';
 import EnemyContainer from './enemy-container.jsx';
@@ -8,17 +9,26 @@ import './game.css';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {phase: 'authenticating', enemies: null};
+    this.state = {phase: 'authenticating', enemyInfos: null, discreteTime: 0};
+    this.enemyContainers = {};
   }
 
   render() {
     var contents;
     switch (this.state.phase) {
       case 'authenticating':
-        contents = <Authenticator onSuccessfulAuthentication={(enemies) => this.onSuccessfulAuthentication(enemies)}/>;
+        contents = <Authenticator onSuccessfulAuthentication={this.updateUntilDead.bind(this)}/>;
         break;
       case 'monitoring':
-        contents = this.state.enemies.map((e) => <EnemyContainer key={e} enemy={e} />);
+        contents = Object.entries(this.state.enemyInfos).map(([e, info]) =>
+          <EnemyContainer key={e} enemy={e}
+                          alive={info.alive}
+                          timeToImpact={info.timeToImpact}
+                          timeSinceDeath={info.timeOfDeath===null ? null : (this.state.discreteTime - info.timeOfDeath)}
+                          ref={(ec) => {console.log('setting', e); this.enemyContainers[e] = ec}} />);
+        break;
+      case 'dead':
+        contents = '';
         break;
       default:
         alert('unknown phase: '+this.state.phase);
@@ -27,10 +37,30 @@ class Game extends React.Component {
     return <div id='content'>{contents}</div>;
   }
 
-  onSuccessfulAuthentication(enemies) {
-    console.log('hi');
-    this.setState({phase: 'monitoring', enemies: enemies});
+  noteUpdate(discreteTime, alive, enemyInfos) {
+    this.setState({
+      discreteTime: discreteTime,
+      phase: (alive ? 'monitoring' : 'dead'),
+      enemyInfos: enemyInfos
+    });
+    Object.entries(this.enemyContainers).map(([e, c]) => c.noteUpdate(this.state.discreteTime, enemyInfos[e]));
+  }
+
+  updateUntilDead(initialUpdate=undefined) {
+    var self = this;
+    if (initialUpdate !== undefined) {
+      self.noteUpdate(initialUpdate.discreteTime, initialUpdate.alive, initialUpdate.enemyInfos);
+    }
+    $.get('./update', {'since': this.state.discreteTime}, (data) => {
+      data = JSON.parse(data);
+      self.noteUpdate(data.discreteTime, data.alive, data.enemyInfos);
+      if (self.state.phase !== 'dead') {
+        setTimeout(()=>self.updateUntilDead(), 100);
+      }
+    });
   }
 }
+
+
 
 export default Game;

@@ -10,19 +10,37 @@ import './launch-button.css';
 class LaunchButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {'phase': 'ready'};
+    this.state = {clicked: false}
   }
 
   render() {
-    if (typeof this.state.phase === 'number') {
-      return <button className="launch-button launch-button--ticking"><Countdown time={this.state.phase}/></button>;
+    if (this.props.phase === 'ready') {
+      if (this.state.clicked)
+        return <button className='launch-button launch-button--ticking'
+                       disabled={true}>
+                 <Countdown time={missileFlightTime}/>
+               </button>;
+      else
+        return <button className='launch-button launch-button--ready'
+                       onClick={(e) => this.launch()}>
+                 &#9762;
+               </button>;
+    } else if (this.props.phase === 'obsolete') {
+      return <button className={`launch-button launch-button--obsolete`}
+                     disabled={true}>
+               &#9760;
+             </button>;
+    } else {
+      return <button className="launch-button launch-button--ticking"
+                  disabled={true}>
+            <Countdown time={this.props.phase}/>
+          </button>;
     }
-    return <button className={`launch-button launch-button--${this.state.phase}`} onClick={(e) => this.launch()} disabled={this.state.phase==='obsolete'}> &#9762; </button>
   }
 
   launch() {
     $.get('launch/'+this.props.enemy);
-    this.setState({'phase': missileFlightTime});
+    this.setState({clicked: true});
   }
 
 }
