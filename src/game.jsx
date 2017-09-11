@@ -20,7 +20,7 @@ class Game extends React.Component {
         contents = <Authenticator onSuccessfulAuthentication={this.updateUntilDead.bind(this)}/>;
         break;
       case 'monitoring':
-        contents = Object.entries(this.state.enemyInfos).map(([e, info]) =>
+        contents = Object.entries(this.state.enemyInfos).sort().map(([e, info]) =>
           <EnemyContainer key={e} enemy={e}
                           alive={info.alive}
                           timeToImpact={info.timeToImpact}
