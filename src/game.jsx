@@ -3,6 +3,7 @@ import $ from 'jquery';
 
 import Authenticator from './authenticator.jsx';
 import EnemyContainer from './enemy-container.jsx';
+import Klaxon from './klaxon.js';
 
 import './game.css';
 
@@ -11,6 +12,8 @@ class Game extends React.Component {
     super(props);
     this.state = {phase: 'authenticating', enemyInfos: null, discreteTime: 0};
     this.enemyContainers = {};
+    this.klaxon = new Klaxon();
+    this.klaxonFlags = new Set();
   }
 
   render() {
@@ -25,6 +28,8 @@ class Game extends React.Component {
                           alive={info.alive}
                           timeToImpact={info.timeToImpact}
                           timeSinceDeath={info.timeOfDeath===null ? null : (this.state.discreteTime - info.timeOfDeath)}
+                          startKlaxon={() => this.startKlaxon(e)}
+                          stopKlaxon={() => this.stopKlaxon(e)}
                           ref={(ec) => {this.enemyContainers[e] = ec}} />);
         break;
       case 'dead':
@@ -58,6 +63,17 @@ class Game extends React.Component {
         setTimeout(()=>self.updateUntilDead(), 100);
       }
     });
+  }
+
+  startKlaxon(e) {
+    this.klaxonFlags.add(e);
+    this.klaxon.start();
+  }
+  stopKlaxon(e) {
+    this.klaxonFlags.delete(e);
+    if (this.klaxonFlags.size === 0) {
+      this.klaxon.stop();
+    }
   }
 }
 

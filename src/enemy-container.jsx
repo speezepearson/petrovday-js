@@ -17,6 +17,8 @@ class EnemyContainer extends React.Component {
       <h2 className="enemy-name">{this.props.enemy}</h2>
       <LaunchButton phase={buttonPhase} enemy={this.props.enemy} />
       <EarlyWarningSystem enemy={this.props.enemy}
+                          startKlaxon={this.props.startKlaxon}
+                          stopKlaxon={this.props.stopKlaxon}
                           ref={(ews) => {this.ews = ews}} />
     </div>;
   }

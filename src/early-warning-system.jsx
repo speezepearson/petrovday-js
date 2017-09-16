@@ -3,6 +3,10 @@ import smoothie from 'smoothie';
 
 import './early-warning-system.css';
 
+const klaxonWindowSize = 50;
+const klaxonMOfNUp = 25;
+const klaxonMOfNDown = 20;
+
 class EarlyWarningSystem extends React.Component {
   constructor(props) {
     super(props);
@@ -35,12 +39,20 @@ class EarlyWarningSystem extends React.Component {
   }
   componentWillUnmount() {
     this.chart.stop();
+    setTimeout(this.props.stopKlaxon, 1000);
   }
 
   addReading(timeAgo, reading) {
     var t = new Date()
     t.setSeconds(t.getSeconds() - timeAgo);
     this.timeSeries.append(t, 100 * ((reading ? 1 : -1) + EarlyWarningSystem.normalvariate()/10));
+
+    var recentPositives = this.timeSeries.data.slice(-klaxonWindowSize).filter(([t,x]) => (x>0)).length;
+    if (recentPositives > klaxonMOfNUp) {
+      this.props.startKlaxon();
+    } else if (recentPositives < klaxonMOfNDown) {
+      this.props.stopKlaxon();
+    }
   }
 
   // Standard Normal variate using Box-Muller transform.
