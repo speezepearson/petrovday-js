@@ -26,7 +26,8 @@ class Authenticator extends React.Component {
       <input type="password" placeholder="Password"
              className={'authenticator__password-field' + (this.state.failed ? ' failed' : '')}
              onKeyPress={(e) => {if (e.keyCode===13) this.authenticate()}}
-             onChange={(e) => this.handleChange(e)} />
+             onChange={(e) => this.handleChange(e)}
+             ref={(e) => {if (e !== null) e.focus()}} />
       &nbsp;
       <div className='authenticator__button-holder'>
         {buttonHolderContents}
