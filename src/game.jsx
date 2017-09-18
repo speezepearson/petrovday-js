@@ -43,6 +43,9 @@ class Game extends React.Component {
   }
 
   noteUpdate(discreteTime, alive, enemyInfos) {
+    if (this.phase !== 'dead' && !alive) {
+      this.props.playExplosion();
+    }
     this.setState({
       discreteTime: discreteTime,
       phase: (alive ? 'monitoring' : 'dead'),
