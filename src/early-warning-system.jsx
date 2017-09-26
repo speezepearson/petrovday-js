@@ -4,8 +4,8 @@ import smoothie from 'smoothie';
 import './early-warning-system.css';
 
 const klaxonWindowSize = 50;
-const klaxonMOfNUp = 25;
-const klaxonMOfNDown = 20;
+const klaxonFractionUp = .4;
+const klaxonFractionDown = .3;
 
 class EarlyWarningSystem extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class EarlyWarningSystem extends React.Component {
         {color:'#880000',lineWidth:2,value:100},
         {color:'#008800',lineWidth:2,value:-100}
       ],
-      millisPerPixel: 50,
+      millisPerPixel: 100,
       maxValue: 150,
       minValue: -180,
       timestampFormatter: smoothie.SmoothieChart.timeFormatter,
@@ -47,10 +47,13 @@ class EarlyWarningSystem extends React.Component {
     t.setSeconds(t.getSeconds() - timeAgo);
     this.timeSeries.append(t, 100 * ((reading ? 1 : -1) + EarlyWarningSystem.normalvariate()/10));
 
-    var recentPositives = this.timeSeries.data.slice(-klaxonWindowSize).filter(([t,x]) => (x>0)).length;
-    if (recentPositives > klaxonMOfNUp) {
+    var recentReadings = this.timeSeries.data
+                            .map(([t,x]) => x);
+    var nRecentPositives = recentReadings.filter((x) => (x>0)).length;
+    console.log(`${nRecentPositives}/${recentReadings.length} recent positives, thresholds ${Math.floor(klaxonFractionDown*recentReadings.length)}-${Math.ceil(klaxonFractionUp*recentReadings.length)}`);
+    if (nRecentPositives > klaxonFractionUp*recentReadings.length) {
       this.props.startKlaxon();
-    } else if (recentPositives < klaxonMOfNDown) {
+    } else if (nRecentPositives < klaxonFractionDown*recentReadings.length) {
       this.props.stopKlaxon();
     }
   }

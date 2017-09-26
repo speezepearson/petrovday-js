@@ -20,7 +20,12 @@ class Game extends React.Component {
     var contents;
     switch (this.state.phase) {
       case 'authenticating':
-        contents = <Authenticator onSuccessfulAuthentication={this.updateUntilDead.bind(this)}/>;
+        contents = <div>
+            <Authenticator onSuccessfulAuthentication={this.updateUntilDead.bind(this)}/>
+            <div style={{"textAlign": "center"}}>
+              Is this your first shift at the Nuclear Monitoring and Control Station? Read the <a href="/static/tutorial/index.html">NMC Instructional Supplement</a>.
+            </div>
+          </div>;
         break;
       case 'monitoring':
         contents = Object.entries(this.state.enemyInfos).sort().map(([e, info]) =>
@@ -43,9 +48,6 @@ class Game extends React.Component {
   }
 
   noteUpdate(discreteTime, alive, enemyInfos) {
-    if (this.phase !== 'dead' && !alive) {
-      this.props.playExplosion();
-    }
     this.setState({
       discreteTime: discreteTime,
       phase: (alive ? 'monitoring' : 'dead'),

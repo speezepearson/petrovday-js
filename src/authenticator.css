@@ -2,7 +2,7 @@
   font-size: 2em;
   border: 1px solid gray;
   width: 70%;
-  margin: 3em;
+  margin: 3em auto;
   padding: 2em;
   display: flex;
   flex-direction: row;
