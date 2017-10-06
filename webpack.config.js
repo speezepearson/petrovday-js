@@ -23,7 +23,7 @@ var basicConfig = {
 
 var serverConfig = Object.assign({}, basicConfig, {
   target: 'node',
-  entry: './src/server.js',
+  entry: './src/server/index.js',
   output: {
     path: path.resolve(__dirname),
     filename: 'index.js'
@@ -32,7 +32,7 @@ var serverConfig = Object.assign({}, basicConfig, {
 
 var clientConfig = Object.assign({}, basicConfig, {
   target: 'web',
-  entry: './src/index.jsx',
+  entry: './src/client/index.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.js'
