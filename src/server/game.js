@@ -1,9 +1,9 @@
 import Missile from './missile.js';
 import EarlyWarningSystem from './early-warning-system.js';
+import { missileFlightTime } from '../common.js';
 
 class Game {
-  constructor(players, missileFlightTime=180) {
-    this.missileFlightTime = missileFlightTime;
+  constructor(players) {
     this.missiles = [];
 
     this.ewss = new Map();
@@ -33,7 +33,7 @@ class Game {
   }
 
   launch(aggressor, victim, departureTime) {
-    this.missiles.push(new Missile(aggressor, victim, departureTime, departureTime+this.missileFlightTime));
+    this.missiles.push(new Missile(aggressor, victim, departureTime, departureTime+missileFlightTime));
   }
 
   readEWS(location, target, time) {
@@ -54,10 +54,10 @@ class Game {
     return null;
   }
 
-  getPreviousTimeOfDeath(victim, before) {
+  getPreviousTimeOfDeath(victim, before, fallback=null) {
     var etas = this.missiles.filter((m) => (m.destination===victim && m.eta <= before)).map((m) => m.eta);
     if (etas.length === 0) {
-      return null;
+      return fallback;
     }
     return Math.min.apply(null, etas);
   }

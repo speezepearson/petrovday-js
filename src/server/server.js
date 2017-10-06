@@ -3,6 +3,7 @@ import express from 'express';
 import expressSlash from 'express-slash';
 
 import DiscreteClock from './discrete-clock.js';
+import { missileFlightTime } from '../common.js';
 
 function prepareAppWithSlash(app) {
     app.enable('strict routing');
@@ -96,7 +97,8 @@ class Server {
         timeToImpact: this.game.getTimeToImpact(player, enemy, now),
         readings: {}
       };
-      for (var t=readingStartTime; t<1+Math.min(now, this.game.missileFlightTime+this.game.getPreviousTimeOfDeath(enemy, now)); t++) {
+      var readingEndTime = Math.min(now, missileFlightTime+this.game.getPreviousTimeOfDeath(enemy, now, Infinity));
+      for (var t=readingStartTime; t<=readingEndTime; t++) {
         ei.readings[t] = this.game.readEWS(player, enemy, t);
       }
     })

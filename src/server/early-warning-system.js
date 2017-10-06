@@ -3,6 +3,9 @@ import PseudorandomFunction from './pseudorandom-function.js';
 function getFractionalProgress(m, time) {
   return (time - m.departureTime) / (m.eta - m.departureTime)
 }
+function fractionalIncreaseInPForMissile(fractionalProgress) {
+  return falseAlarmP + (1-falseAlarmP)*fractionalProgress;
+}
 
 var falseAlarmP = 0.1;
 
@@ -14,16 +17,12 @@ class EarlyWarningSystem {
     this.prf = new PseudorandomFunction(seed);
   }
 
-  static fractionalIncreaseInPForMissile(fractionalProgress) {
-    return falseAlarmP + (1-falseAlarmP)*fractionalProgress;
-  }
-
   getReading(missiles, time) {
     var alarmP = falseAlarmP;
     for (var i=0; i<missiles.length; i++) {
-      m = missiles[i];
+      var m = missiles[i];
       if (m.origin === this.target && m.destination === this.location) {
-        alarmP += (1-alarmP)*this.fractionalIncreaseInPForMissile(getFractionalProgress(m, time));
+        alarmP += (1-alarmP)*fractionalIncreaseInPForMissile(getFractionalProgress(m, time));
         break;
       }
     }

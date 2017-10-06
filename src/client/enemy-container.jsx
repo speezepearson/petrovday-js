@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import LaunchButton from './launch-button.jsx';
 import EarlyWarningSystem from './early-warning-system.jsx';
-import { missileFlightTime } from './globals.jsx';
+import { missileFlightTime } from '../common.js';
 import './enemy-container.css'
 
 class EnemyContainer extends React.Component {

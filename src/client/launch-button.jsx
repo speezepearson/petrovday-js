@@ -2,7 +2,7 @@ import * as React from 'react';
 import $ from 'jquery';
 
 import Countdown from './countdown.jsx';
-import { missileFlightTime } from './globals.jsx';
+import { missileFlightTime } from '../common.js';
 
 import './launch-button.css';
 
